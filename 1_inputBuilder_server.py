@@ -146,11 +146,14 @@ def workerReadAndConvertGivenFastaLinesToTextFile(file_path=None,file_name=None,
         else:
             # pull fasta content from regular lines
             fasta_str=fasta_str+line.strip()
-    # job 4. write the pulled <fasta_str> contents in to disk with name <save_file_name>
-    with open(os.path.join(save_dir,save_file_name), 'w') as output_file:
-        output_file.write(fasta_str)
-    # job 5. give info for loop call
-    print('%s file saved succesfully on disk...'%(save_file_name))
+    # job 4. write the pulled <fasta_str> contents in to disk with name <save_file_name> by checking file existence
+    if not os.path.isfile(os.path.join(save_dir,save_file_name)):
+        with open(os.path.join(save_dir,save_file_name), 'w') as output_file:
+            output_file.write(fasta_str)
+        # job 5. give info for loop call
+        print('%s file saved succesfully on disk...'%(save_file_name))
+    else:
+        print('%s file already exists so skipping it...'%(save_file_name))                  
     return None
 
 
