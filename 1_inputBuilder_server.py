@@ -59,7 +59,9 @@ def helperReadFileInToList(file_path=None,file_name=None):
 
 ### workerSplitFastaFileForRdkitInput Related Helper Step Functions
 def workerFindStringBetweenTwoChars(start_char=None,end_char=None,search_string=None):
-    result_str=search_string[search_string.find(start_char) + len(end_char):search_string.rfind(end_char)]
+    # result_str=search_string[search_string.find(start_char) + len(end_char):search_string.rfind(end_char)] # gives error for some files
+    # print(result_str)
+    result_str=search_string.split(start_char)[1].split(end_char)[0] # this is more general solution
     #print(result_str)
     return result_str
 
