@@ -280,7 +280,7 @@ def pipeHelperConvertGivenRdKitInputToAtomicNums(input_dirs=None,file_path=None,
 def helperGetWavelengthCountForGivenAtom(data_path=None,atom_number=None,file_ext='wldat'):
     data_file='%s.%s'%(atom_number,file_ext)
     num_lines = sum(1 for line in open(os.path.join(WAVELENGTH_DB_DATA_PATH, data_file)))
-    print(num_lines)
+    #print(num_lines)
     return num_lines
 
 def helperConvertOneLinedFileIntoList(data_path=None,data_file=None,split_char=','):
