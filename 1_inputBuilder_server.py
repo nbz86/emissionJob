@@ -13,6 +13,7 @@ WAVELENGTH_DB_DATA_PATH=os.path.join(ROOT_PATH,'db')
 SPECTRUM_IMAGES_PATH=os.path.join(ROOT_PATH,'png_files')
 
 MAX_IMG_SIZE=4000
+JPEG_QUALITY=80
 ### INIT FOLDERS AND PATHS PART
 def helperInitFoldersAndPathsForGivenJob(job_dir=None,job_folders=None):
     folder_holder=[]
@@ -659,6 +660,7 @@ def workerDefineColorAndPositionInputsForSpiralPlot(input_file_dir=None,out_path
 
 def workerPlotSpiralFromData(data_path=None,data_file=None,save_path=None,save_file=None,total_points=None):
     from matplotlib import pyplot as plt
+    from PIL import Image
     import pandas as pd
     import gc
     # job 0. detect image size part
@@ -671,10 +673,22 @@ def workerPlotSpiralFromData(data_path=None,data_file=None,save_path=None,save_f
 
     ax.scatter(data_df['x_values'],data_df['y_values'], c=data_df['hex_codes'], s=0.1)
     #plt.show()
+    # add an 'png' folder under given <save_path>
+    if not os.path.isdir(os.path.join(save_path,'png')):
+        os.mkdir(os.path.join(save_path,'png'))
+
     # remove x and y axis labels and ticks
     plt.axis('off')
-    plt.savefig(os.path.join(save_path,save_file), dpi=166)
+    plt.savefig(os.path.join(save_path,'png',save_file), dpi=166)
 
+    # add an 'jpg' folder under given <save_path>
+    if not os.path.isdir(os.path.join(save_path,'jpg')):
+        os.mkdir(os.path.join(save_path,'jpg'))
+    # convert saved png format file to optimized jpeg
+    im = Image.open(os.path.join(save_path,'png',save_file))
+    im = im.convert('RGB')
+    save_file_jpg='%s.jpg'%(save_file.split('.')[0])
+    im.save(os.path.join(save_path,'jpg',save_file_jpg), quality=JPEG_QUALITY)
     # Clear the all the figures and check memory usage:
     helperMatplotlibClearMemory()
     # Free memory
@@ -709,7 +723,7 @@ def looperFastaSequenceVisualiser(input_dirs=None,image_output_path=None,data_ou
                     os.mkdir(os.path.join(image_output_path,sub_folder_name))
                     os.mkdir(os.path.join(data_output_path,sub_folder_name))
                 # job 4. run image building process by checking if given file is not processed already
-                if not os.path.isfile(os.path.join(image_output_path, sub_folder_name,output_file_name)):
+                if not os.path.isfile(os.path.join(image_output_path, sub_folder_name,'png',output_file_name)):
                     # visualising part
                     print('%s/%s %s file is visualising...' % (progress_counter, len(job_files), atom_input))
                     csv_output_path=os.path.join(data_output_path,sub_folder_name)
