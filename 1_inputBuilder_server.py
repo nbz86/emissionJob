@@ -4,7 +4,7 @@ import os
 #### CONSTANT VARIABLE DECLARATIONS
 ROOT_PATH='/media/DATA2/burak/emission_job'
 FASTA_DATA_PATH=os.path.join(ROOT_PATH,'uniclust50_2018')
-FASTA_INPUT_LIST_FILE='fasta_list.input' #holds the splitted fasta file names
+FASTA_INPUT_LIST_FILE='fake_fasta_list.input' #holds the splitted fasta file names
 FASTA_INPUT_JOB_FOLDERS=['inputs/log','inputs/txt','inputs/atom','inputs/csv','inputs/filtered_csv']
 FASTA_OUTPUT_JOB_FOLDERS=['outputs/data','outputs/image','outputs/log']
 
