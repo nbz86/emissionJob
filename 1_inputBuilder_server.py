@@ -292,6 +292,17 @@ def helperConvertOneLinedFileIntoList(data_path=None,data_file=None,split_char='
 
     return line_contents_holder
 
+def helperFindGivenStringExistsInFile(file_dir=None,check_str=None):
+    #
+    add_line_to_file=False
+    with open(file_dir) as csv_check_file:
+        for line in csv_check_file:
+            if check_str in line:
+                add_line_to_file=True
+                break
+
+    return add_line_to_file
+
 def helperWriteGivenProcessOutputsAsCsv(output_dir=None,process_output=None,col_names=['File_ID','Total_Points','File_Dir']):
     # job 0. detect file existane on disk if not write first line with <col_names> as a header
     if not os.path.isfile(output_dir):
@@ -299,8 +310,13 @@ def helperWriteGivenProcessOutputsAsCsv(output_dir=None,process_output=None,col_
             f.write(','.join(col_names)+'\n')
             f.write(','.join(process_output) + '\n')
     else:
-        with open (output_dir,'a') as f:
-            f.write(','.join(process_output)+'\n')
+        check_str=','.join(process_output)
+        append_line_flag=helperFindGivenStringExistsInFile(file_dir=output_dir,check_str=check_str)
+        if append_line_flag:
+            with open (output_dir,'a') as f:
+                f.write(','.join(process_output)+'\n')
+        else:
+            print('line exists in file...')
     return None
 
 def workerCalculateTotalCountOfSpiralPointsForGivenFile(file_path=None,file_name=None,save_dir=None):
