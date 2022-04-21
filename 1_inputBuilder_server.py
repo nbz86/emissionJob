@@ -705,13 +705,14 @@ def workerPlotSpiralFromData(data_path=None,data_file=None,save_path=None,save_f
     im = im.convert('RGB')
     save_file_jpg='%s.jpg'%(save_file.split('.')[0])
     im.save(os.path.join(save_path,'jpg',save_file_jpg), quality=JPEG_QUALITY)
+    im.close()
     # Clear the all the figures and check memory usage:
     helperMatplotlibClearMemory()
     # Free memory
     gc.collect()
     fig.clf()
     plt.close(fig)
-    del fig,ax
+    del fig,ax,im
     gc.collect()
     return None
 
